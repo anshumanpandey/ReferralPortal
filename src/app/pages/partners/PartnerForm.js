@@ -14,7 +14,7 @@ export const PartnerForm = ({ onHide, partner, edit }) => {
 
   return (
     <>
-      <Dialog onClose={onHide} open={true}>
+      <Dialog fullWidth onClose={onHide} open={true}>
         <DialogTitle id="simple-dialog-title">
           {!edit ? "Create a Partner" : `Edit ${partner.companyName}`}
         </DialogTitle>

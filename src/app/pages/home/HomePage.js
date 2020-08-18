@@ -6,6 +6,7 @@ import Partners from "../partners/Partners.page";
 import DocsPage from "./docs/DocsPage";
 import { LayoutSplashScreen } from "../../../_metronic";
 import ReferralProgram from "../referralProgram/ReferralProgram.page";
+import { connect } from "react-redux";
 
 const GoogleMaterialPage = lazy(() =>
   import("./google-material/GoogleMaterialPage")
@@ -14,12 +15,12 @@ const ReactBootstrapPage = lazy(() =>
   import("./react-bootstrap/ReactBootstrapPage")
 );
 
-export default function HomePage() {
+function HomePage(props) {
   // useEffect(() => {
   //   console.log('Home page');
   // }, []) // [] - is required if you need only one call
   // https://reactjs.org/docs/hooks-reference.html#useeffect
-
+  
   return (
     <Suspense fallback={<LayoutSplashScreen />}>
       <Switch>
@@ -29,7 +30,7 @@ export default function HomePage() {
         }
         <Route path="/builder" component={Builder} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/partners" component={Partners} />
+        {props.user.role == "Super_admin" && <Route path="/partners" component={Partners} />}
         <Route path="/referalProgram" component={ReferralProgram} />
         <Route path="/google-material" component={GoogleMaterialPage} />
         <Route path="/react-bootstrap" component={ReactBootstrapPage} />
@@ -39,3 +40,9 @@ export default function HomePage() {
     </Suspense>
   );
 }
+
+const mapStateToProps = ({ auth: { user } }) => ({
+  user
+});
+
+export default connect(mapStateToProps)(HomePage);

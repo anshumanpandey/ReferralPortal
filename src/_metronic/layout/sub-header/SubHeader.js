@@ -44,23 +44,6 @@ class SubHeader extends React.Component {
             </LayoutContextConsumer>
 
             <span className="kt-subheader__separator kt-subheader__separator--v" />
-            <span className="kt-subheader__desc">#XRS-45670</span>
-            <a
-              href="#"
-              className="btn btn-label-warning btn-bold btn-sm btn-icon-h kt-margin-l-10"
-            >
-              Add New
-            </a>
-          </div>
-
-          <div className="kt-subheader__toolbar">
-            <div className="kt-subheader__wrapper">
-              <button type="button" className="btn kt-subheader__btn-primary">
-                Actions &nbsp;
-                <SortNum1Icon className="kt-svg-icon kt-svg-icon--sm" />
-              </button>
-              <QuickActions />
-            </div>
           </div>
         </div>
       </div>

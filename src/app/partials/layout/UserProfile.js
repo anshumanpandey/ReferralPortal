@@ -25,11 +25,11 @@ class UserProfile extends React.Component {
 
             {showHi && (
               <span className="kt-header__topbar-username kt-hidden-mobile">
-                {user.fullname}
+                {user.companyName}
               </span>
             )}
 
-            {showAvatar && <img alt="Pic" src={user.pic} />}
+            {showAvatar && <img alt="Pic" src={"https://immedilet-invest.com/wp-content/uploads/2016/01/user-placeholder.jpg"} />}
 
             {showBadge && (
               <span className="kt-badge kt-badge--username kt-badge--unified-success kt-badge--lg kt-badge--rounded kt-badge--bold">
@@ -48,17 +48,9 @@ class UserProfile extends React.Component {
             }}
           >
             <div className="kt-user-card__avatar">
-              <img alt="Pic" className="kt-hidden" src={user.pic} />
-              <span className="kt-badge kt-badge--lg kt-badge--rounded kt-badge--bold kt-font-success">
-                S
-              </span>
+              <img alt="Pic" className="kt-hidden" src={"https://immedilet-invest.com/wp-content/uploads/2016/01/user-placeholder.jpg"} />
             </div>
             <div className="kt-user-card__name">{user.fullname}</div>
-            <div className="kt-user-card__badge">
-              <span className="btn btn-success btn-sm btn-bold btn-font-md">
-                23 messages
-              </span>
-            </div>
           </div>
           <div className="kt-notification">
             <a className="kt-notification__item">
@@ -71,45 +63,6 @@ class UserProfile extends React.Component {
                 </div>
                 <div className="kt-notification__item-time">
                   Account settings and more
-                </div>
-              </div>
-            </a>
-            <a className="kt-notification__item">
-              <div className="kt-notification__item-icon">
-                <i className="flaticon2-mail kt-font-warning" />
-              </div>
-              <div className="kt-notification__item-details">
-                <div className="kt-notification__item-title kt-font-bold">
-                  My Messages
-                </div>
-                <div className="kt-notification__item-time">
-                  Inbox and tasks
-                </div>
-              </div>
-            </a>
-            <a className="kt-notification__item">
-              <div className="kt-notification__item-icon">
-                <i className="flaticon2-rocket-1 kt-font-danger" />
-              </div>
-              <div className="kt-notification__item-details">
-                <div className="kt-notification__item-title kt-font-bold">
-                  My Activities
-                </div>
-                <div className="kt-notification__item-time">
-                  Logs and notifications
-                </div>
-              </div>
-            </a>
-            <a className="kt-notification__item">
-              <div className="kt-notification__item-icon">
-                <i className="flaticon2-hourglass kt-font-brand" />
-              </div>
-              <div className="kt-notification__item-details">
-                <div className="kt-notification__item-title kt-font-bold">
-                  My Tasks
-                </div>
-                <div className="kt-notification__item-time">
-                  latest tasks and projects
                 </div>
               </div>
             </a>

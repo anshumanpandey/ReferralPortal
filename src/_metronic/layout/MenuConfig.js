@@ -27,7 +27,8 @@ export default {
         root: false,
         icon: "flaticon2-architecture-and-city",
         page: "partners",
-        bullet: "dot"
+        bullet: "dot",
+        roles: ["Super_admin"]
       },
       {
         title: "Referral Program",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import useAxios from 'axios-hooks'
 import { Button } from "@material-ui/core";
 import DataTable from 'react-data-table-component';
@@ -9,7 +9,11 @@ export const ReferralProgram = () => {
   const [showModal, setShowModal] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios({
     url: '/referralProgram'
-  })
+  },{ manual: true })
+
+  useEffect(() => {
+    refetch()
+  },[])
 
   return (
     <>
@@ -30,6 +34,7 @@ export const ReferralProgram = () => {
             columns={[
               { name: 'Name', selector: 'name' },
               { name: 'End Date', cell: (row) => row.endDate ? row.endDate.toString().split("T")[0] : "No" },
+              { name: 'Is Active', cell: (row) => row.isActive ? "Yes": "No" },
               { name: 'Edit', cell: (row) => <EditIcon onClick={() => setShowModal(row)} style={{ cursor: "pointer"}} /> },
             ]}
           />
