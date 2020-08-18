@@ -25,14 +25,6 @@ import "./_metronic/_assets/plugins/flaticon2/flaticon.css";
 const { PUBLIC_URL } = process.env;
 
 /**
- * Creates `axios-mock-adapter` instance for provided `axios` instance, add
- * basic Metronic mocks and returns it.
- *
- * @see https://github.com/ctimmerm/axios-mock-adapter
- */
-/* const mock = */ mockAxios(axios);
-
-/**
  * Inject metronic interceptors for axios.
  *
  * @see https://github.com/axios/axios#interceptors
