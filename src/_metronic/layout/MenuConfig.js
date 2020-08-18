@@ -29,6 +29,13 @@ export default {
         page: "partners",
         bullet: "dot"
       },
+      {
+        title: "Referral Program",
+        root: false,
+        icon: "flaticon2-architecture-and-city",
+        page: "referalProgram",
+        bullet: "dot"
+      },
     ]
   }
 };

@@ -9,6 +9,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { LastLocationProvider } from "react-router-last-location";
 import { Routes } from "./app/router/Routes";
 import { I18nProvider, LayoutSplashScreen, ThemeProvider } from "./_metronic";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns'; // choose your lib
 
 export default function App({ store, persistor, basename }) {
   return (
@@ -27,7 +29,9 @@ export default function App({ store, persistor, basename }) {
                 {/* Provide `react-intl` context synchronized with Redux state.  */}
                 <I18nProvider>
                   {/* Render routes with provided `Layout`. */}
-                  <Routes />
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Routes />
+                  </MuiPickersUtilsProvider>
                 </I18nProvider>
               </ThemeProvider>
             </LastLocationProvider>

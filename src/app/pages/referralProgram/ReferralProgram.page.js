@@ -1,0 +1,46 @@
+import React, { useState } from "react";
+import useAxios from 'axios-hooks'
+import { Button } from "@material-ui/core";
+import DataTable from 'react-data-table-component';
+import EditIcon from '@material-ui/icons/Edit';
+import PartnerForm from "./ReferalProgramForm";
+
+export const ReferralProgram = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [{ data, loading, error }, refetch] = useAxios({
+    url: '/referralProgram'
+  })
+
+  return (
+    <>
+      <div className="row">
+        <div className="col-md-12">
+          <DataTable
+            actions={
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setShowModal({})}
+              >
+                New
+              </Button>
+            }
+            progressPending={loading}
+            data={data}
+            columns={[
+              { name: 'Name', selector: 'name' },
+              { name: 'End Date', cell: (row) => row.endDate ? row.endDate.toString().split("T")[0] : "No" },
+              { name: 'Edit', cell: (row) => <EditIcon onClick={() => setShowModal(row)} style={{ cursor: "pointer"}} /> },
+            ]}
+          />
+        </div>
+      </div>
+      {showModal && <PartnerForm edit={showModal.companyName} referralProgram={showModal} onHide={(action) => {
+        setShowModal(false)
+        if (action == "CREATED") refetch()
+      }} />}
+    </>
+  );
+}
+
+export default ReferralProgram;
