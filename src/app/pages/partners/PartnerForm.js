@@ -20,15 +20,29 @@ export const PartnerForm = ({ onHide, partner, edit }) => {
         </DialogTitle>
         <DialogContent>
           <Formik
-            initialValues={partner}
+            initialValues={{
+              id: partner.id,
+              companyName: partner.companyName,
+              address: partner.address,
+              pluginKey: partner.pluginKey,
+              email: partner.email,
+              password: partner.password,
+            }}
             validate={values => {
               const errors = {};
+
+              if (!values.companyName) errors.companyName = "Field required"
+              if (!values.address) errors.address = "Field required"
+              if (!values.email) errors.email = "Field required"
+              if (!values.pluginKey) errors.pluginKey = "Field required"
+              if (!values.password && !edit) errors.password = "Field required"
 
               return errors;
             }}
             onSubmit={(data, { setStatus, setSubmitting }) => {
               doPost({ data })
                 .then(() => onHide("CREATED"))
+                .catch(err => err && err.response && setStatus(err.response.data.message))
             }}
           >
             {({

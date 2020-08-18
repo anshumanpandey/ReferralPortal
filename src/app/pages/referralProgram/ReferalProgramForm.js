@@ -22,6 +22,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
         <DialogContent>
           <Formik
             initialValues={{
+              id: referralProgram.id,
               name: referralProgram.name,
               endDate: referralProgram.endDate || new Date(),
               noEndDate: !referralProgram.name ? false : referralProgram && !referralProgram.endDate ? true : false
