@@ -22,6 +22,13 @@ export default {
         translate: "MENU.DASHBOARD",
         bullet: "dot"
       },
+      {
+        title: "Partners",
+        root: false,
+        icon: "flaticon2-architecture-and-city",
+        page: "partners",
+        bullet: "dot"
+      },
     ]
   }
 };
