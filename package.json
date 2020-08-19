@@ -7,7 +7,7 @@
     "serve": "cp-cli build _site/ && serve",
     "start": "cp-cli build _site/ && serve",
     "dev": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "REACT_APP_API_URL=https://referral-smart-backend.herokuapp.com/api react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint src",
