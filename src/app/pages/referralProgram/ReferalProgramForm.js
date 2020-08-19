@@ -184,7 +184,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                                   size="small"
                                   variant="outlined"
                                   color="primary"
-                                  onClick={() => arrayHelpers.insert(index, '')} // insert an empty string at a position
+                                  onClick={() => arrayHelpers.insert(index, { url: "", imgUrl: "" })}
                                 >+</Button>
                               </div>
                             </div>

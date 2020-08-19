@@ -37,6 +37,20 @@ export default {
         page: "referalProgram",
         bullet: "dot"
       },
+      {
+        title: "Reward",
+        root: false,
+        icon: "flaticon2-architecture-and-city",
+        page: "reward",
+        bullet: "dot"
+      },
+      {
+        title: "Order",
+        root: false,
+        icon: "flaticon2-architecture-and-city",
+        page: "order",
+        bullet: "dot"
+      },
     ]
   }
 };

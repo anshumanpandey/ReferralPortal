@@ -3,6 +3,8 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import Builder from "./Builder";
 import Dashboard from "./Dashboard";
 import Partners from "../partners/Partners.page";
+import Reward from "../reward/Reward.page";
+import Order from "../order/Order.page";
 import DocsPage from "./docs/DocsPage";
 import { LayoutSplashScreen } from "../../../_metronic";
 import ReferralProgram from "../referralProgram/ReferralProgram.page";
@@ -32,6 +34,8 @@ function HomePage(props) {
         <Route path="/dashboard" component={Dashboard} />
         {props.user.role == "Super_admin" && <Route path="/partners" component={Partners} />}
         <Route path="/referalProgram" component={ReferralProgram} />
+        <Route path="/reward" component={Reward} />
+        <Route path="/order" component={Order} />
         <Route path="/google-material" component={GoogleMaterialPage} />
         <Route path="/react-bootstrap" component={ReactBootstrapPage} />
         <Route path="/docs" component={DocsPage} />

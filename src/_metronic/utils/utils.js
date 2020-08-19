@@ -1,3 +1,5 @@
+import { actions } from "../../app/store/ducks/auth.duck";
+
 export function removeCSSClass(ele, cls) {
   const reg = new RegExp("(\\s|^)" + cls + "(\\s|$)");
   ele.className = ele.className.replace(reg, " ");
@@ -26,6 +28,26 @@ export function setupAxios(axios, store) {
     },
     err => Promise.reject(err)
   );
+
+  axios.interceptors.response.use(function (response) {
+    // Any status code that lie within the range of 2xx cause this function to trigger
+    // Do something with response data
+    return response;
+  }, function (error) {
+    // Any status codes that falls outside the range of 2xx cause this function to trigger
+    // Do something with response error
+    if (error.response) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx
+      console.log(error.response.data);
+      console.log(error.response.status);
+      if (error.response.status == 403) {
+        store.dispatch(actions.logout())
+      }
+      console.log(error.response.headers);
+    } 
+    return Promise.reject(error);
+  });
 }
 
 /*  removeStorage: removes a key from localStorage and its sibling expiracy key
