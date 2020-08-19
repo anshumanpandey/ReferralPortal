@@ -10,7 +10,7 @@ export function addCSSClass(ele, cls) {
 export const toAbsoluteUrl = pathname => process.env.PUBLIC_URL + pathname;
 
 export function setupAxios(axios, store) {
-  axios.defaults.baseURL = 'http://localhost:5000/api';
+  axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
   axios.interceptors.request.use(
     config => {
       console.log(`${config.baseURL}${config.url}`)
