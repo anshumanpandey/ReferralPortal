@@ -67,7 +67,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
 
               freeDeliver: referralProgram?.freeDeliver || false,
 
-              friendFreeProduct: null,
+              friendFreeProduct: referralProgram?.friendFreeProduct || null,
 
               personalLinkPromotion: referralProgram.promotionMethods ? referralProgram.promotionMethods.includes(PROMOTION_ENUM.PERSONAL_LINK) : false,
               couponPromotion: referralProgram.promotionMethods ? referralProgram.promotionMethods.includes(PROMOTION_ENUM.COUPON_CODE) : false,
@@ -399,7 +399,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                         fullWidth
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
-                        value={values.friendFreeProduct}
+                        value={parseInt(values.friendFreeProduct)}
                         onChange={(e) => setFieldValue("friendFreeProduct", e.target.value)}
                       >
                         <MenuItem value={1}>Product A</MenuItem>
@@ -472,6 +472,9 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                           style={{ display: 'none' }}
                           id="contained-button-file"
                           type="file"
+                          onChange={(e) => {
+                            console.log(e.target.files)
+                          }}
                         />
                         <label htmlFor="contained-button-file">
                           <Button variant="contained" color="primary" component="span">
