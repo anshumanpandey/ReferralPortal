@@ -52,12 +52,12 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
 
               giftCount: referralProgram?.Gifts?.length || 1,
               rewardType: referralProgram?.customerRewardType || REWARD_TYPE_ENUM.STORED_CREDIT,
-              gifts: referralProgram?.Gifts?.length ? referralProgram.Gifts : [{ name: "", referralId: ""}],
+              gifts: referralProgram?.Gifts?.length ? referralProgram.Gifts : [{ name: "", referralId: "" }],
               emailTemplate: referralProgram?.emailTemplate || "",
-              setCreditExpiryDate: referralProgram?.creditExpiryDate ? true: false,
+              setCreditExpiryDate: referralProgram?.creditExpiryDate ? true : false,
               creditExpiryDate: referralProgram?.creditExpiryDate || undefined,
               creditToAward: referralProgram?.creditToAward || null,
-              setMaxCreditPerCustomer: referralProgram?.customerMaxStoreCredit ? true: false,
+              setMaxCreditPerCustomer: referralProgram?.customerMaxStoreCredit ? true : false,
               maxCreditPerCustomer: referralProgram?.customerMaxStoreCredit || "",
               customerFreeProduct: referralProgram?.customerFreeProduct || null,
 
@@ -73,6 +73,9 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
               couponPromotion: referralProgram.promotionMethods ? referralProgram.promotionMethods.includes(PROMOTION_ENUM.COUPON_CODE) : false,
               socialMediaImage: referralProgram.promotionMethods ? referralProgram.promotionMethods.includes(PROMOTION_ENUM.SOCIAL_MEDIA_IMAGE) : false,
               emailPromotion: referralProgram.promotionMethods ? referralProgram.promotionMethods.includes(PROMOTION_ENUM.EMAIL) : false,
+
+              shareImage: null,
+              previewImage: referralProgram.imgUrl
             }}
             validate={values => {
               const errors = {};
@@ -115,10 +118,26 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                 errors.promotionMethod = "Select at least one option"
               }
 
+              if (values.socialMediaImage) {
+                if (!values.shareImage) errors.shareImage = "Field required"
+              }
+
+              if (values.emailPromotion) {
+                if (!values.emailTemplate) errors.emailTemplate = "Field required"
+              }
+
+
               return errors;
             }}
-            onSubmit={(data, { setStatus, setSubmitting }) => {
-              doPost({ data })
+            onSubmit={(values, { setStatus, setSubmitting }) => {
+              delete values.previewImage
+              const data = new FormData()
+
+              Object.keys(values).forEach((k) => {
+                if (values[k]) data.append(k, values[k])
+              })
+
+              doPost({ data, headers: { 'Content-Type': 'multipart/form-data' } })
                 .then(() => onHide("CREATED"))
                 .catch(err => err && err.response && setStatus(err.response.data.message))
             }}
@@ -304,7 +323,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                         onChange={(e) => {
                           setFieldValue("giftCount", e.target.value)
                           const gifts = Array(e.target.value).fill("a").map(() => {
-                            return { name: "", referralId: ""}
+                            return { name: "", referralId: "" }
                           })
 
                           setFieldValue("gifts", gifts)
@@ -466,22 +485,39 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                     />
 
                     {values.socialMediaImage == true && (
-                      <div className="form-group" style={{ marginBottom: 0 }}>
-                        <input
-                          accept="image/*"
-                          style={{ display: 'none' }}
-                          id="contained-button-file"
-                          type="file"
-                          onChange={(e) => {
-                            console.log(e.target.files)
-                          }}
-                        />
-                        <label htmlFor="contained-button-file">
-                          <Button variant="contained" color="primary" component="span">
-                            Upload
-                        </Button>
-                        </label>
-                      </div>
+                      <>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                          <input
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id="contained-button-file"
+                            type="file"
+                            onChange={(e) => {
+                              setFieldValue("shareImage", e.target.files[0])
+
+                              var oFReader = new FileReader();
+                              oFReader.readAsDataURL(e.target.files[0]);
+
+                              oFReader.onload = function (oFREvent) {
+                                setFieldValue("previewImage", oFREvent.target.result)
+                              };
+                            }}
+                          />
+                          <label htmlFor="contained-button-file">
+                            <Button variant="contained" color="primary" component="span">
+                              Upload
+                          </Button>
+                          </label>
+                        </div>
+                        {errors.shareImage && (
+                          <FormHelperText error={true}>
+                            {errors.shareImage}
+                          </FormHelperText>
+                        )}
+                        {values.previewImage && (
+                          <img src={values.previewImage} style={{ height: '100px', width: '100px' }} />
+                        )}
+                      </>
                     )}
 
                     <FormControlLabel
