@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import useAxios from 'axios-hooks'
-import { Button } from "@material-ui/core";
 import DataTable from 'react-data-table-component';
-import EditIcon from '@material-ui/icons/Edit';
 
 export const OrderPage = () => {
-  const [showModal, setShowModal] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios({
     url: '/order'
   }, { manual: true })
