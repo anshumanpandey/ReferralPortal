@@ -19,15 +19,6 @@ export const OrderPage = () => {
       <div className="row">
         <div className="col-md-12">
           <DataTable
-            actions={
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setShowModal({})}
-              >
-                New
-              </Button>
-            }
             progressPending={loading}
             data={data}
             columns={[

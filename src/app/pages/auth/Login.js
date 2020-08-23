@@ -72,7 +72,7 @@ function Login(props) {
                 .catch((err) => {
                   disableLoading();
                   setSubmitting(false);
-                  if (err.response.data) {
+                  if (err.response && err.response.data) {
                     setStatus(err.response.data.message);
                   } else {
                     setStatus(
