@@ -232,7 +232,7 @@ export default function Dashboard() {
   return (
     <>
       <div className="row">
-        <div className="col-xl-6">
+        <div className="col-xl-12">
           <div className="row row-full-height">
             {body}
           </div>
