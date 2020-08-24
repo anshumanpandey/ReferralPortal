@@ -100,8 +100,8 @@ export default function Dashboard() {
             onChange={() => {}}
           />
         </div>
-        <div className="col-sm-12 col-md-12 col-lg-6">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.customersAmount}
@@ -112,10 +112,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
-
           <div className="kt-space-20" />
 
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        </div>
+
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={135}
@@ -126,10 +128,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
+          <div className="kt-space-20" />
+
         </div>
 
-        <div className="col-sm-12 col-md-12 col-lg-6">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.credits}
@@ -140,10 +144,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
-
           <div className="kt-space-20" />
 
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        </div>
+
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"146€"}
@@ -154,10 +160,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
+          <div className="kt-space-20" />
+
         </div>
 
-        <div className="col-sm-12 col-md-12 col-lg-6">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"7345€"}
@@ -168,10 +176,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
-
           <div className="kt-space-20" />
 
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        </div>
+
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"14024€"}
@@ -182,10 +192,12 @@ export default function Dashboard() {
               />
             </PortletBody>
           </Portlet>
+          <div className="kt-space-20" />
+
         </div>
 
-        <div className="col-sm-12 col-md-12 col-lg-6">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+        <div className="col-sm-12 col-md-12 col-lg-4">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"10000€"}
