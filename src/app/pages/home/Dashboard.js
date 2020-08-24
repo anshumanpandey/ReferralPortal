@@ -6,6 +6,7 @@ import {
   PortletHeader,
   PortletHeaderToolbar
 } from "../../partials/content/Portlet";
+import { DatePicker } from "@material-ui/pickers";
 import OrderStatisticsChart from "../../widgets/OrderStatisticsChart";
 import LatestUpdates from "../../widgets/LatestUpdates";
 import useAxios from 'axios-hooks'
@@ -77,6 +78,28 @@ export default function Dashboard() {
   if (!loading) {
     body = (
       <>
+        <div className="col-sm-12 col-md-12 col-lg-12">
+          <DatePicker
+            label="Program Start date"
+            style={{ borderRadius: "4px",marginBottom: '1rem', backgroundColor: 'white', padding: '1rem'}}
+            fullWidth
+            placeholder="End Date"
+            autoOk
+            disableToolbar
+            variant="inline"
+            onChange={() => {}}
+          />
+          <DatePicker
+            label="Program End date"
+            style={{ borderRadius: "4px",marginBottom: '1rem', backgroundColor: 'white', padding: '1rem'}}
+            fullWidth
+            placeholder="End Date"
+            autoOk
+            disableToolbar
+            variant="inline"
+            onChange={() => {}}
+          />
+        </div>
         <div className="col-sm-12 col-md-12 col-lg-6">
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
             <PortletBody fluid={true}>
