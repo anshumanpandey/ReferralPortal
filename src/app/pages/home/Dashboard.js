@@ -3,7 +3,11 @@ import { useSelector } from "react-redux";
 import {
   Portlet,
   PortletBody,
+  PortletHeader,
+  PortletHeaderToolbar
 } from "../../partials/content/Portlet";
+import OrderStatisticsChart from "../../widgets/OrderStatisticsChart";
+import LatestUpdates from "../../widgets/LatestUpdates";
 import useAxios from 'axios-hooks'
 import { metronic } from "../../../_metronic";
 import QuickStatsChart from "../../widgets/QuickStatsChart";
@@ -91,8 +95,8 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={data?.customersAmount}
-                desc="User"
+                value={135}
+                desc="Sponsor"
                 data={chartOptions.chart1.data}
                 color={chartOptions.chart1.color}
                 border={chartOptions.chart1.border}
@@ -119,14 +123,72 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={data?.credits}
-                desc="Total credits"
+                value={"146€"}
+                desc="Average cart of new customer"
                 data={chartOptions.chart2.data}
                 color={chartOptions.chart2.color}
                 border={chartOptions.chart2.border}
               />
             </PortletBody>
           </Portlet>
+        </div>
+
+        <div className="col-sm-12 col-md-12 col-lg-6">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+            <PortletBody fluid={true}>
+              <QuickStatsChart
+                value={"7345€"}
+                desc="total revenue from new customer referred"
+                data={chartOptions.chart2.data}
+                color={chartOptions.chart2.color}
+                border={chartOptions.chart2.border}
+              />
+            </PortletBody>
+          </Portlet>
+
+          <div className="kt-space-20" />
+
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+            <PortletBody fluid={true}>
+              <QuickStatsChart
+                value={"14024€"}
+                desc="total revenue from existing customer using stored credit"
+                data={chartOptions.chart2.data}
+                color={chartOptions.chart2.color}
+                border={chartOptions.chart2.border}
+              />
+            </PortletBody>
+          </Portlet>
+        </div>
+
+        <div className="col-sm-12 col-md-12 col-lg-6">
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand">
+            <PortletBody fluid={true}>
+              <QuickStatsChart
+                value={"10000€"}
+                desc="total revenue"
+                data={chartOptions.chart2.data}
+                color={chartOptions.chart2.color}
+                border={chartOptions.chart2.border}
+              />
+            </PortletBody>
+          </Portlet>
+
+          <div className="kt-space-20" />
+        </div>
+        <div className="col-xl-6">
+          <Portlet fluidHeight={true}>
+            <PortletHeader
+              title="Store Credit"
+            />
+
+            <PortletBody>
+              <OrderStatisticsChart />
+            </PortletBody>
+          </Portlet>
+        </div>
+        <div className="col-xl-6">
+          <LatestUpdates />
         </div>
       </>
     );
