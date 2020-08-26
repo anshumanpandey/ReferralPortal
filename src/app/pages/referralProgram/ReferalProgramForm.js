@@ -119,7 +119,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
               }
 
               if (values.socialMediaImage) {
-                if (!values.shareImage) errors.shareImage = "Field required"
+                if (!values.shareImage && !referralProgram.imgUrl) errors.shareImage = "Field required"
               }
 
               if (values.emailPromotion) {
