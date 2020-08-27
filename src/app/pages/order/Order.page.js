@@ -19,8 +19,6 @@ export const OrderPage = () => {
             progressPending={loading}
             data={data}
             columns={[
-              { name: 'Customer', selector: 'customer' },
-              { name: 'Sponsor', selector: 'sponsor' },
               { name: 'Order Amount', selector: 'orderAmount' },
               { name: 'Promotion Method', selector: 'promotionMethod' },
             ]}

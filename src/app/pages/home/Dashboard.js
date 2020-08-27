@@ -120,7 +120,7 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={135}
+                value={data?.sponsors}
                 desc="Sponsor"
                 data={chartOptions.chart1.data}
                 color={chartOptions.chart1.color}

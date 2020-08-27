@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import useAxios from 'axios-hooks'
 import DataTable from 'react-data-table-component';
 import GiftListModal from "./GiftListModal";
+import { connect } from "react-redux";
 
-export const Reward = () => {
+export const Reward = (props) => {
   const [showModal, setShowModal] = useState(false);
+  let url = '/reward'
+  if (props.user.role == "Super_admin") {
+    url = "/reward/admin/rewards"
+  }
   const [{ data, loading, error }, refetch] = useAxios({
-    url: '/reward'
+    url: url
   }, { manual: true })
 
   useEffect(() => {
@@ -21,12 +26,12 @@ export const Reward = () => {
             progressPending={loading}
             data={data}
             columns={[
-              { name: 'Sponsor', selector: 'sponsor' },
-              { name: 'Stored Credit', selector: 'storeCredit' },
-              { name: 'Free Producr', selector: 'freeProduct' },
+              { name: 'Sponsor', selector: 'Customer.firstname' },
+              { name: 'Stored Credit', selector: 'storeCredit', cell: (r) => r.storeCredit ? r.storeCredit: 'N/A' },
+              { name: 'Free Producr', selector: 'freeProduct', cell: (r) => r.freeProduct ? r.freeProduct: 'N/A' },
               { name: 'Reward Type', cell: (row) => row.rewardType != "Gift" ? row.rewardType : <p style={{ textDecoration: 'underline', color: 'blue', cursor: "pointer"}} onClick={() => setShowModal(row.Gifts)}>{row.rewardType}</p>},
-              { name: 'Discount Amount', selector: 'discountAmount' },
-              { name: 'Discount Unit', selector: 'discountUnit' },
+              { name: 'Discount Amount', selector: 'discountAmount', cell: (r) => r.discountAmount ? r.discountAmount: 'N/A' },
+              { name: 'Discount Unit', selector: 'discountUnit', cell: (r) => r.discountUnit ? r.discountUnit: 'N/A' },
               { name: 'Free Deliver', selector: 'freeDeliver', cell: (row) => row.freeDeliver ? "Yes": "No"},
             ]}
           />
@@ -37,4 +42,8 @@ export const Reward = () => {
   );
 }
 
-export default Reward;
+const mapStateToProps = ({ auth: { user } }) => ({
+  user
+});
+
+export default connect(mapStateToProps)(Reward);
