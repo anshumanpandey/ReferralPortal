@@ -609,7 +609,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                             Website url
                           </div>
                           <div>
-                            <b>##referralCode##</b>
+                            <b>##ReferralCode##</b>
                             Referral Code
                           </div>
                         </div>

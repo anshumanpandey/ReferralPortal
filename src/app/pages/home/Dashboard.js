@@ -223,7 +223,7 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={"146€"}
+                value={`${data?.averageCartNewCustomer}€`}
                 desc="Average cart of new customer"
                 data={chartOptions.chart2.data}
                 color={chartOptions.chart2.color}
@@ -239,8 +239,8 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={"7345€"}
-                desc="total revenue from new customer referred"
+                value={`${data?.totalRevenueNewCustomerReferred}€`}
+                desc="Total revenue from new customer referred"
                 data={chartOptions.chart2.data}
                 color={chartOptions.chart2.color}
                 border={chartOptions.chart2.border}
@@ -255,8 +255,8 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={"14024€"}
-                desc="total revenue from existing customer using stored credit"
+                value={`${data?.totalRevenueFromExistingCustomerUsingStoredCredit}€`}
+                desc="Total revenue from existing customer using stored credit"
                 data={chartOptions.chart2.data}
                 color={chartOptions.chart2.color}
                 border={chartOptions.chart2.border}
@@ -271,8 +271,8 @@ export default function Dashboard() {
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
-                value={"10000€"}
-                desc="total revenue"
+                value={`${data?.totalRevenue}€`}
+                desc="Total revenue"
                 data={chartOptions.chart2.data}
                 color={chartOptions.chart2.color}
                 border={chartOptions.chart2.border}
@@ -289,12 +289,12 @@ export default function Dashboard() {
             />
 
             <PortletBody>
-              <OrderStatisticsChart />
+              <OrderStatisticsChart totalUsedCredits={data?.totalUsedCredits} totalUnusedCredits={data?.totalUnusedCredits} />
             </PortletBody>
           </Portlet>
         </div>
         <div className="col-xl-6">
-          <LatestUpdates />
+          <LatestUpdates leaderboard={data?.leaderboard} />
         </div>
       </>
     );

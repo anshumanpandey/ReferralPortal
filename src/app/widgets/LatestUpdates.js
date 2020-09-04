@@ -2,7 +2,7 @@
 import React from "react";
 import PortletHeaderDropdown from "../partials/content/CustomDropdowns/PortletHeaderDropdown";
 
-export default function LatestUpdates() {
+export default function LatestUpdates({ leaderboard }) {
   return (
     <>
       <div className="kt-portlet kt-portlet--height-fluid">
@@ -13,33 +13,19 @@ export default function LatestUpdates() {
         </div>
         <div className="kt-portlet__body">
           <div className="kt-widget4">
-            <div className="kt-widget4__item">
-              <a
-                className="kt-widget4__title"
-                href="https://keenthemes.com.my/metronic"
-              >
-                Eminem
-              </a>
-              <span className="kt-widget4__number kt-font-success">10</span>
-            </div>
-            <div className="kt-widget4__item">
-              <a
-                className="kt-widget4__title"
-                href="https://keenthemes.com.my/metronic"
-              >
-                G-Eazy
-              </a>
-              <span className="kt-widget4__number kt-font-success">10</span>
-            </div>
-            <div className="kt-widget4__item">
-              <a
-                className="kt-widget4__title"
-                href="https://keenthemes.com.my/metronic"
-              >
-                Tupac
-              </a>
-              <span className="kt-widget4__number kt-font-success">10</span>
-            </div>
+            {leaderboard?.map(l => {
+              return (
+                <div className="kt-widget4__item">
+                  <a
+                    className="kt-widget4__title"
+                    href="https://keenthemes.com.my/metronic"
+                  >
+                    {l.firstname}
+                  </a>
+                  <span className="kt-widget4__number kt-font-success">{l.Orders.length}</span>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
