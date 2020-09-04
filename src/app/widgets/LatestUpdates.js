@@ -22,7 +22,7 @@ export default function LatestUpdates({ leaderboard }) {
                   >
                     {l.firstname}
                   </a>
-                  <span className="kt-widget4__number kt-font-success">{l.Orders.length}</span>
+                  <span className="kt-widget4__number kt-font-success">{l.Customers.length}</span>
                 </div>
               );
             })}
