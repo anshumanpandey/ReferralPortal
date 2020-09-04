@@ -14,6 +14,7 @@ import { metronic } from "../../../_metronic";
 import QuickStatsChart from "../../widgets/QuickStatsChart";
 import { CircularProgress, FormControl, InputLabel, Select, MenuItem, Card, CardContent } from "@material-ui/core";
 import { useDidUpdateEffect } from "../../utils/useDidUpdateEffect";
+import { useParams } from "react-router-dom";
 const queryString = require('query-string');
 
 export default function Dashboard() {
@@ -67,6 +68,7 @@ export default function Dashboard() {
     [brandColor, dangerColor, primaryColor, successColor]
   );
 
+  const params = useParams()
   const [resumeFor, setResumeFor] = useState("ALL")
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
@@ -78,6 +80,10 @@ export default function Dashboard() {
   const [programsReq, getPrograms] = useAxios({
     url: `/referralProgram/`
   })
+
+  useEffect(() => {
+    if (params.programId) setResumeFor(params.programId)    
+  }, [params.programId])
 
   useEffect(() => {
     refetch()

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { TextField, Checkbox, FormControlLabel, Button, makeStyles, Typography, Select, MenuItem, Radio, RadioGroup, FormHelperText } from "@material-ui/core";
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -6,6 +6,7 @@ import Dialog from '@material-ui/core/Dialog';
 import { Formik, FieldArray } from "formik";
 import useAxios from 'axios-hooks'
 import { DatePicker } from "@material-ui/pickers";
+import { connect } from "react-redux";
 
 const REWARD_TYPE_ENUM = {
   STORED_CREDIT: "Stored_credit",
@@ -27,12 +28,22 @@ const useStyles = makeStyles({
   },
 });
 
-export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
+export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
   const classes = useStyles();
   const [{ data, loading, error }, doPost] = useAxios({
     url: '/referralProgram/',
     method: 'POST'
   }, { manual: true })
+
+  const [getUserReq, getUser] = useAxios({
+    url: '/user/getPartners',
+  }, { manual: true })
+
+  useEffect(() => {
+    if (user.role == "Super_admin") {
+      getUser()
+    }
+  }, [])
 
   return (
     <>
@@ -45,6 +56,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
             initialValues={{
               id: referralProgram.id,
               name: referralProgram.name,
+              description: referralProgram.description,
               endDate: referralProgram.endDate || new Date(),
               isActive: referralProgram.isActive || false,
               SocialShares: referralProgram.SocialShares || [],
@@ -64,6 +76,8 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
               customerFreeProduct: referralProgram?.customerFreeProduct || null,
 
               destinationLink: referralProgram?.destinationLink || "",
+
+              linkTo: referralProgram?.UserId || undefined,
 
               rewardFriendType: referralProgram?.friendRewardType || REWARD_TYPE_ENUM.DISCOUNT,
               discountAmount: referralProgram?.friendDiscountAmount || "",
@@ -85,6 +99,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
               const errors = {};
 
               if (!values.name) errors.name = "Field required"
+              if (!values.description) errors.description = "Field required"
               if (values.noEndDate == false) {
                 if (!values.endDate) errors.endDate = "Field required"
               }
@@ -179,6 +194,20 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                       value={values.name}
                       helperText={touched.name && errors.name}
                       error={Boolean(touched.name && errors.name)}
+                    />
+                  </div>
+
+                  <div className="form-group" style={{ marginBottom: 0 }}>
+                    <TextField
+                      label="Description"
+                      margin="normal"
+                      className="kt-width-full"
+                      name="description"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.description}
+                      helperText={touched.description && errors.description}
+                      error={Boolean(touched.description && errors.description)}
                     />
                   </div>
 
@@ -604,6 +633,25 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                         </div>
                       </>
                     )}
+
+                    {user.role == "Super_admin" && (
+                      <>
+                        <Typography variant="h6" gutterBottom display="block">
+                          Link to user
+                        </Typography>
+                        <Select
+                          fullWidth
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={values.linkTo}
+                          onChange={(e) => setFieldValue("linkTo", e.target.value)}
+                        >
+                          {getUserReq?.data?.map(u => {
+                            return <MenuItem value={u.id}>{u.companyName}</MenuItem>
+                          })}
+                        </Select>
+                      </>
+                    )}
                   </div>
 
                   <div style={{ marginTop: '1rem' }} className="kt-login__actions">
@@ -631,4 +679,8 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
   );
 }
 
-export default ReferalProgramForm;
+const mapStateToProps = ({ auth: { user } }) => ({
+  user
+});
+
+export default connect(mapStateToProps)(ReferalProgramForm);

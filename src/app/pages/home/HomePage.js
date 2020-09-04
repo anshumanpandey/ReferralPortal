@@ -31,7 +31,7 @@ function HomePage(props) {
           <Redirect exact from="/" to="/dashboard" />
         }
         <Route path="/builder" component={Builder} />
-        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/dashboard/:programId?" component={Dashboard} />
         {props.user.role == "Super_admin" && <Route path="/partners" component={Partners} />}
         <Route path="/referalProgram" component={ReferralProgram} />
         <Route path="/reward" component={Reward} />
