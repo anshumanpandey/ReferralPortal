@@ -54,12 +54,16 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
               rewardType: referralProgram?.customerRewardType || REWARD_TYPE_ENUM.STORED_CREDIT,
               gifts: referralProgram?.Gifts?.length ? referralProgram.Gifts : [{ name: "", referralId: "" }],
               emailTemplate: referralProgram?.emailTemplate || "",
+              emailFrom: referralProgram?.emailFrom || "",
+              emailSubject: referralProgram?.emailSubject || "",
               setCreditExpiryDate: referralProgram?.creditExpiryDate ? true : false,
               creditExpiryDate: referralProgram?.creditExpiryDate || undefined,
               creditToAward: referralProgram?.creditToAward || null,
               setMaxCreditPerCustomer: referralProgram?.customerMaxStoreCredit ? true : false,
               maxCreditPerCustomer: referralProgram?.customerMaxStoreCredit || "",
               customerFreeProduct: referralProgram?.customerFreeProduct || null,
+
+              destinationLink: referralProgram?.destinationLink || "",
 
               rewardFriendType: referralProgram?.friendRewardType || REWARD_TYPE_ENUM.DISCOUNT,
               discountAmount: referralProgram?.friendDiscountAmount || "",
@@ -279,7 +283,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                       {values.setMaxCreditPerCustomer == true && (
                         <div className="form-group col-md-6" style={{ marginBottom: 0 }}>
                           <TextField
-                            label={`Store Credit Maximum`}
+                            label={`Enter a discount value`}
                             margin="normal"
                             className="kt-width-full"
                             name={`maxCreditPerCustomer`}
@@ -462,6 +466,21 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                       label="Personal Link"
                     />
 
+                    {values.personalLinkPromotion == true && (
+                      <div className="form-group" style={{ marginBottom: 0 }}>
+                        <TextField
+                          label="Destination Link"
+                          margin="normal"
+                          className="kt-width-full"
+                          name="destinationLink"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          value={values.destinationLink}
+                          helperText={touched.destinationLink && errors.destinationLink}
+                          error={Boolean(touched.destinationLink && errors.destinationLink)}
+                        />
+                      </div>
+                    )}
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -532,21 +551,58 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit }) => {
                     />
 
                     {values.emailPromotion == true && (
-                      <div className="form-group" style={{ marginBottom: 0 }}>
-                        <TextField
-                          label="Email Template"
-                          multiline={true}
-                          rows={3}
-                          margin="normal"
-                          className="kt-width-full"
-                          name="emailTemplate"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={values.emailTemplate}
-                          helperText={touched.emailTemplate && errors.emailTemplate}
-                          error={Boolean(touched.emailTemplate && errors.emailTemplate)}
-                        />
-                      </div>
+                      <>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                          <TextField
+                            label="Email Template"
+                            multiline={true}
+                            rows={3}
+                            margin="normal"
+                            className="kt-width-full"
+                            name="emailTemplate"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.emailTemplate}
+                            helperText={touched.emailTemplate && errors.emailTemplate}
+                            error={Boolean(touched.emailTemplate && errors.emailTemplate)}
+                          />
+                          <Typography>Short codes</Typography>
+                          <div>
+                            <b>##Name##</b>
+                            Friend's Name
+                          </div>
+                          <div>
+                            <b>##Email##</b>
+                            Friend's Email
+                          </div>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                          <TextField
+                            label="From Email"
+                            margin="normal"
+                            className="kt-width-full"
+                            name="emailFrom"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.emailFrom}
+                            helperText={touched.emailFrom && errors.emailFrom}
+                            error={Boolean(touched.emailFrom && errors.emailFrom)}
+                          />
+                        </div>
+                        <div className="form-group" style={{ marginBottom: 0 }}>
+                          <TextField
+                            label="Subject"
+                            margin="normal"
+                            className="kt-width-full"
+                            name="emailSubject"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.emailSubject}
+                            helperText={touched.emailSubject && errors.emailSubject}
+                            error={Boolean(touched.emailSubject && errors.emailSubject)}
+                          />
+                        </div>
+                      </>
                     )}
                   </div>
 

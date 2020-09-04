@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect } from "react";
+import React, { useMemo, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import {
   Portlet,
@@ -12,7 +12,9 @@ import LatestUpdates from "../../widgets/LatestUpdates";
 import useAxios from 'axios-hooks'
 import { metronic } from "../../../_metronic";
 import QuickStatsChart from "../../widgets/QuickStatsChart";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, FormControl, InputLabel, Select, MenuItem, Card, CardContent } from "@material-ui/core";
+import { useDidUpdateEffect } from "../../utils/useDidUpdateEffect";
+const queryString = require('query-string');
 
 export default function Dashboard() {
   const { brandColor, dangerColor, successColor, primaryColor } = useSelector(
@@ -65,43 +67,106 @@ export default function Dashboard() {
     [brandColor, dangerColor, primaryColor, successColor]
   );
 
+  const [resumeFor, setResumeFor] = useState("ALL")
+  const [startDate, setStartDate] = useState(null)
+  const [endDate, setEndDate] = useState(null)
+
   const [{ data, loading, error }, refetch] = useAxios({
-    url: '/referralProgram/resume'
+    url: `/referralProgram/resume?for=${resumeFor == "ALL" ? "": resumeFor}`
   }, { manual: true })
+
+  const [programsReq, getPrograms] = useAxios({
+    url: `/referralProgram/`
+  })
 
   useEffect(() => {
     refetch()
   }, [])
+
+  const fetchWithQueries = () => {
+    const queries = {}
+
+    if (resumeFor != "ALL"){
+      queries.for = resumeFor
+    }
+
+    if (startDate && endDate){
+      queries.from = startDate.getTime() / 1000
+      queries.to = endDate.getTime() / 1000
+    }
+    
+    const urlQuery = queryString.stringify(queries);
+
+    refetch({ url: `/referralProgram/resume?${urlQuery}` })
+  }
+
+  useDidUpdateEffect(() => {
+    fetchWithQueries()
+  }, [resumeFor])
+
+  useDidUpdateEffect(() => {
+    fetchWithQueries()
+  }, [startDate, endDate])
 
   let body = <CircularProgress />
 
   if (!loading) {
     body = (
       <>
+        <div className="col-sm-12 col-md-12 col-lg-12" style={{ marginBottom: '1rem' }}>
+          <Card>
+            <CardContent style={{ justifyContent: 'flex-end', display: 'flex' }}>
+              {programsReq.loading && (
+                <CircularProgress />
+              )}
+              {!programsReq.loading && (
+                <FormControl>
+                  <InputLabel id="demo-simple-select-label">Program</InputLabel>
+                  <Select
+                    autoWidth={true}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={resumeFor}
+                    onChange={(e) => setResumeFor(e.target.value)}
+                  >
+                    <MenuItem value={"ALL"}>All</MenuItem>
+                    {programsReq.data?.map(p => {
+                      return <MenuItem value={p.id}>{p.name}</MenuItem>
+                    })}
+                  </Select>
+                </FormControl>
+              )}
+            </CardContent>
+          </Card>
+        </div>
         <div className="col-sm-12 col-md-12 col-lg-12">
           <DatePicker
-            label="Program Start date"
-            style={{ borderRadius: "4px",marginBottom: '1rem', backgroundColor: 'white', padding: '1rem'}}
+            label="Show result from"
+            style={{ borderRadius: "4px", marginBottom: '1rem', backgroundColor: 'white', padding: '1rem' }}
             fullWidth
             placeholder="End Date"
             autoOk
             disableToolbar
             variant="inline"
-            onChange={() => {}}
+            emptyLabel=""
+            value={startDate}
+            onChange={(d) => setStartDate(d)}
           />
           <DatePicker
-            label="Program End date"
-            style={{ borderRadius: "4px",marginBottom: '1rem', backgroundColor: 'white', padding: '1rem'}}
+            label="To"
+            style={{ borderRadius: "4px", marginBottom: '1rem', backgroundColor: 'white', padding: '1rem' }}
             fullWidth
             placeholder="End Date"
             autoOk
             disableToolbar
             variant="inline"
-            onChange={() => {}}
+            emptyLabel=""
+            value={endDate}
+            onChange={(d) => setEndDate(d)}
           />
         </div>
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.customersAmount}
@@ -117,7 +182,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.sponsors}
@@ -133,7 +198,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.credits}
@@ -149,7 +214,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"146€"}
@@ -165,7 +230,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"7345€"}
@@ -181,7 +246,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"14024€"}
@@ -197,7 +262,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%'}}>
+          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={"10000€"}
