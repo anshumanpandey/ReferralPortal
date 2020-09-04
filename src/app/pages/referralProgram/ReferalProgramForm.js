@@ -604,6 +604,14 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                             <b>##Email##</b>
                             Friend's Email
                           </div>
+                          <div>
+                            <b>##WebsiteUrl##</b>
+                            Website url
+                          </div>
+                          <div>
+                            <b>##referralCode##</b>
+                            Referral Code
+                          </div>
                         </div>
                         <div className="form-group" style={{ marginBottom: 0 }}>
                           <TextField
