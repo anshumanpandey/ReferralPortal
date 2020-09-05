@@ -87,17 +87,22 @@ function Dashboard({ user }) {
   }, { manual: true })
 
   useEffect(() => {
-    fetchWithQueries()
+    if (params.programId) {
+      fetchWithQueries()
+    }
   }, [params.programId])
 
   useEffect(() => {
-    refetch()
+    console.log("use effect")
     if (user.role == "Super_admin") {
       getPartners()
+    } else {
+      setResumeForPartner(user.id)
     }
+    fetchWithQueries(user.id)
   }, [])
 
-  const fetchWithQueries = (forProgramId) => {
+  const fetchWithQueries = (forProgramId, userId) => {
     const queries = {}
 
     if (forProgramId) {
@@ -106,7 +111,9 @@ function Dashboard({ user }) {
       queries.for = resumeFor
     }
 
-    if (resumeForPartner != "ALL") {
+    if (userId) {
+      queries.forPartner = userId
+    }else if (resumeForPartner != "ALL") {
       queries.forPartner = resumeForPartner
     }
 
@@ -168,7 +175,12 @@ function Dashboard({ user }) {
                       onChange={(e) => setResumeFor(e.target.value)}
                     >
                       <MenuItem value={"ALL"}>All</MenuItem>
-                      {programsReq.data?.map(p => {
+                      {programsReq.data?.filter(p => {
+                        if (resumeForPartner != "ALL") {
+                          return p.UserId == resumeForPartner
+                        }
+                        return true
+                      }).map(p => {
                         return <MenuItem value={p.id}>{p.name}</MenuItem>
                       })}
                     </Select>
