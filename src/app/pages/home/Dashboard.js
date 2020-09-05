@@ -98,8 +98,8 @@ function Dashboard({ user }) {
       getPartners()
     } else {
       setResumeForPartner(user.id)
+      fetchWithQueries(user.id)
     }
-    fetchWithQueries(user.id)
   }, [])
 
   const fetchWithQueries = (forProgramId, userId) => {
