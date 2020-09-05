@@ -93,9 +93,9 @@ function Dashboard({ user }) {
   }, [params.programId])
 
   useEffect(() => {
-    console.log("use effect")
     if (user.role == "Super_admin") {
       getPartners()
+      fetchWithQueries()
     } else {
       setResumeForPartner(user.id)
       fetchWithQueries(user.id)
