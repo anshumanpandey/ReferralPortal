@@ -39,7 +39,12 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
     url: '/user/getPartners',
   }, { manual: true })
 
+  const [getProductsReq, refetchProducts] = useAxios({
+    url: '/product/back',
+  }, { manual: true })
+
   useEffect(() => {
+    refetchProducts()
     if (user.role == "Super_admin") {
       getUser()
     }
@@ -153,7 +158,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
               const data = new FormData()
 
               Object.keys(values).forEach((k) => {
-                if (values[k]) data.append(k, values[k])
+                if (values[k] !== null && values[k] !== undefined) data.append(k, values[k])
               })
 
               doPost({ data, headers: { 'Content-Type': 'multipart/form-data' } })
@@ -181,6 +186,25 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                     <div role="alert" className="alert alert-danger">
                       <div className="alert-text">{status}</div>
                     </div>
+                  )}
+
+                  {user.role == "Super_admin" && (
+                    <>
+                      <Typography variant="h6" gutterBottom display="block">
+                        Select Partner
+                        </Typography>
+                      <Select
+                        fullWidth
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={values.linkTo}
+                        onChange={(e) => setFieldValue("linkTo", e.target.value)}
+                      >
+                        {getUserReq?.data?.map(u => {
+                          return <MenuItem value={u.id}>{u.companyName}</MenuItem>
+                        })}
+                      </Select>
+                    </>
                   )}
 
                   <div className="form-group" style={{ marginBottom: 0 }}>
@@ -237,14 +261,6 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                     />
                   </div>
 
-                  <div className="form-group">
-                    <FormControlLabel
-                      control={<Checkbox checked={values.isActive} onChange={() => {
-                        setFieldValue("isActive", !values.isActive)
-                      }} name="checkedA" />}
-                      label="Is Active"
-                    />
-                  </div>
                   <Typography variant="h6" gutterBottom>
                     Create a Reward for your customer
                   </Typography>
@@ -255,7 +271,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                     value={values.rewardType}
                     onChange={(e) => setFieldValue("rewardType", e.target.value)}
                   >
-                    <MenuItem value={REWARD_TYPE_ENUM.STORED_CREDIT}>Stored Credit</MenuItem>
+                    <MenuItem value={REWARD_TYPE_ENUM.STORED_CREDIT}>Store Credit</MenuItem>
                     <MenuItem value={REWARD_TYPE_ENUM.GIFT}>Gift</MenuItem>
                     <MenuItem value={REWARD_TYPE_ENUM.FREE_PRODUCT}>Free Product</MenuItem>
                   </Select>
@@ -312,7 +328,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                       {values.setMaxCreditPerCustomer == true && (
                         <div className="form-group col-md-6" style={{ marginBottom: 0 }}>
                           <TextField
-                            label={`Enter a discount value`}
+                            label={`Set the maximum store credit`}
                             margin="normal"
                             className="kt-width-full"
                             name={`maxCreditPerCustomer`}
@@ -334,10 +350,8 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                         onChange={(e) => setFieldValue("customerFreeProduct", e.target.value)}
                         error={Boolean(touched.customerFreeProduct && errors.customerFreeProduct)}
                       >
-                        <MenuItem value={1}>Product A</MenuItem>
-                        <MenuItem value={2}>Product B</MenuItem>
-                        <MenuItem value={3}>Product C</MenuItem>
-                        <MenuItem value={4}>Product E</MenuItem>
+                        {getProductsReq?.data?.length == 0 && <MenuItem value={undefined}>No products on DB</MenuItem>}
+                        {getProductsReq?.data?.length != 0 && getProductsReq?.data?.map(p => <MenuItem value={p.id}>{p.name}</MenuItem>)}
                       </Select>
                       {touched.customerFreeProduct && errors.customerFreeProduct && (
                         <FormHelperText error={true}>
@@ -423,7 +437,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                     <>
                       <div style={{ marginBottom: 0 }}>
                         <TextField
-                          label={`Store Credit Maximum`}
+                          label={`Discount Value`}
                           margin="normal"
                           className="kt-width-full"
                           name={`discountAmount`}
@@ -454,10 +468,8 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                         value={parseInt(values.friendFreeProduct)}
                         onChange={(e) => setFieldValue("friendFreeProduct", e.target.value)}
                       >
-                        <MenuItem value={1}>Product A</MenuItem>
-                        <MenuItem value={2}>Product B</MenuItem>
-                        <MenuItem value={3}>Product C</MenuItem>
-                        <MenuItem value={4}>Product E</MenuItem>
+                        {getProductsReq?.data?.length == 0 && <MenuItem value={undefined}>No products on DB</MenuItem>}
+                        {getProductsReq?.data?.length != 0 && getProductsReq?.data?.map(p => <MenuItem value={p.id}>{p.name}</MenuItem>)}
                       </Select>
                     </>
                   )}
@@ -494,22 +506,6 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                       }
                       label="Personal Link"
                     />
-
-                    {values.personalLinkPromotion == true && (
-                      <div className="form-group" style={{ marginBottom: 0 }}>
-                        <TextField
-                          label="Destination Link"
-                          margin="normal"
-                          className="kt-width-full"
-                          name="destinationLink"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          value={values.destinationLink}
-                          helperText={touched.destinationLink && errors.destinationLink}
-                          error={Boolean(touched.destinationLink && errors.destinationLink)}
-                        />
-                      </div>
-                    )}
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -615,19 +611,6 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                         </div>
                         <div className="form-group" style={{ marginBottom: 0 }}>
                           <TextField
-                            label="From Email"
-                            margin="normal"
-                            className="kt-width-full"
-                            name="emailFrom"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.emailFrom}
-                            helperText={touched.emailFrom && errors.emailFrom}
-                            error={Boolean(touched.emailFrom && errors.emailFrom)}
-                          />
-                        </div>
-                        <div className="form-group" style={{ marginBottom: 0 }}>
-                          <TextField
                             label="Subject"
                             margin="normal"
                             className="kt-width-full"
@@ -639,25 +622,6 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                             error={Boolean(touched.emailSubject && errors.emailSubject)}
                           />
                         </div>
-                      </>
-                    )}
-
-                    {user.role == "Super_admin" && (
-                      <>
-                        <Typography variant="h6" gutterBottom display="block">
-                          Link to user
-                        </Typography>
-                        <Select
-                          fullWidth
-                          labelId="demo-simple-select-label"
-                          id="demo-simple-select"
-                          value={values.linkTo}
-                          onChange={(e) => setFieldValue("linkTo", e.target.value)}
-                        >
-                          {getUserReq?.data?.map(u => {
-                            return <MenuItem value={u.id}>{u.companyName}</MenuItem>
-                          })}
-                        </Select>
                       </>
                     )}
                   </div>

@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, connect } from "react-redux";
 import {
   Portlet,
   PortletBody,
@@ -12,12 +12,12 @@ import LatestUpdates from "../../widgets/LatestUpdates";
 import useAxios from 'axios-hooks'
 import { metronic } from "../../../_metronic";
 import QuickStatsChart from "../../widgets/QuickStatsChart";
-import { CircularProgress, FormControl, InputLabel, Select, MenuItem, Card, CardContent } from "@material-ui/core";
+import { CircularProgress, FormControl, InputLabel, Select, MenuItem, Card, CardContent, Button } from "@material-ui/core";
 import { useDidUpdateEffect } from "../../utils/useDidUpdateEffect";
 import { useParams } from "react-router-dom";
 const queryString = require('query-string');
 
-export default function Dashboard() {
+function Dashboard({ user }) {
   const { brandColor, dangerColor, successColor, primaryColor } = useSelector(
     state => ({
       brandColor: metronic.builder.selectors.getConfig(
@@ -70,49 +70,55 @@ export default function Dashboard() {
 
   const params = useParams()
   const [resumeFor, setResumeFor] = useState("ALL")
+  const [resumeForPartner, setResumeForPartner] = useState("ALL")
   const [startDate, setStartDate] = useState(null)
   const [endDate, setEndDate] = useState(null)
 
   const [{ data, loading, error }, refetch] = useAxios({
-    url: `/referralProgram/resume?for=${resumeFor == "ALL" ? "": resumeFor}`
+    url: `/referralProgram/resume?for=${resumeFor == "ALL" ? "" : resumeFor}`
   }, { manual: true })
 
   const [programsReq, getPrograms] = useAxios({
     url: `/referralProgram/`
   })
 
+  const [getPartnersReq, getPartners] = useAxios({
+    url: `/user/getPartners`
+  }, { manual: true })
+
   useEffect(() => {
-    if (params.programId) setResumeFor(params.programId)    
+    fetchWithQueries()
   }, [params.programId])
 
   useEffect(() => {
     refetch()
+    if (user.role == "Super_admin") {
+      getPartners()
+    }
   }, [])
 
-  const fetchWithQueries = () => {
+  const fetchWithQueries = (forProgramId) => {
     const queries = {}
 
-    if (resumeFor != "ALL"){
+    if (forProgramId) {
+      queries.for = forProgramId
+    } else if (resumeFor != "ALL") {
       queries.for = resumeFor
     }
 
-    if (startDate && endDate){
+    if (resumeForPartner != "ALL") {
+      queries.forPartner = resumeForPartner
+    }
+
+    if (startDate && endDate) {
       queries.from = startDate.getTime() / 1000
       queries.to = endDate.getTime() / 1000
     }
-    
+
     const urlQuery = queryString.stringify(queries);
 
     refetch({ url: `/referralProgram/resume?${urlQuery}` })
   }
-
-  useDidUpdateEffect(() => {
-    fetchWithQueries()
-  }, [resumeFor])
-
-  useDidUpdateEffect(() => {
-    fetchWithQueries()
-  }, [startDate, endDate])
 
   let body = <CircularProgress />
 
@@ -121,55 +127,87 @@ export default function Dashboard() {
       <>
         <div className="col-sm-12 col-md-12 col-lg-12" style={{ marginBottom: '1rem' }}>
           <Card>
-            <CardContent style={{ justifyContent: 'flex-end', display: 'flex' }}>
-              {programsReq.loading && (
-                <CircularProgress />
+            <CardContent style={{ display: 'flex' }}>
+              {user.role == "Super_admin" && (
+                <div style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+                  {getPartnersReq.loading && (
+                    <CircularProgress />
+                  )}
+                  {!getPartnersReq.loading && (
+                    <FormControl fullWidth={true}>
+                      <InputLabel id="demo-simple-select-label">Partner</InputLabel>
+                      <Select
+                        fullWidth={true}
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={resumeForPartner}
+                        onChange={(e) => setResumeForPartner(e.target.value)}
+                      >
+                        <MenuItem value={"ALL"}>All</MenuItem>
+                        {getPartnersReq.data?.map(p => {
+                          return <MenuItem value={p.id}>{p.companyName}</MenuItem>
+                        })}
+                      </Select>
+                    </FormControl>
+                  )}
+                </div>
               )}
-              {!programsReq.loading && (
-                <FormControl>
-                  <InputLabel id="demo-simple-select-label">Program</InputLabel>
-                  <Select
-                    autoWidth={true}
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={resumeFor}
-                    onChange={(e) => setResumeFor(e.target.value)}
-                  >
-                    <MenuItem value={"ALL"}>All</MenuItem>
-                    {programsReq.data?.map(p => {
-                      return <MenuItem value={p.id}>{p.name}</MenuItem>
-                    })}
-                  </Select>
-                </FormControl>
-              )}
+
+              <div style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+                {programsReq.loading && (
+                  <CircularProgress />
+                )}
+                {!programsReq.loading && (
+                  <FormControl fullWidth={true}>
+                    <InputLabel id="demo-simple-select-label">Program</InputLabel>
+                    <Select
+                      fullWidth={true}
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={resumeFor}
+                      onChange={(e) => setResumeFor(e.target.value)}
+                    >
+                      <MenuItem value={"ALL"}>All</MenuItem>
+                      {programsReq.data?.map(p => {
+                        return <MenuItem value={p.id}>{p.name}</MenuItem>
+                      })}
+                    </Select>
+                  </FormControl>
+                )}
+              </div>
+              <div style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+                <DatePicker
+                  fullWidth={true}
+                  label="Show result from"
+                  placeholder="End Date"
+                  autoOk
+                  disableToolbar
+                  variant="inline"
+                  emptyLabel=""
+                  value={startDate}
+                  onChange={(d) => setStartDate(d)}
+                />
+              </div>
+              <div style={{ width: '100%', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+                <DatePicker
+                  fullWidth={true}
+                  label="To"
+                  placeholder="End Date"
+                  autoOk
+                  disableToolbar
+                  variant="inline"
+                  emptyLabel=""
+                  value={endDate}
+                  onChange={(d) => setEndDate(d)}
+                />
+              </div>
+              <div style={{ display: 'flex', alignItems: 'flex-end', width: 'auto' }}>
+                <Button onClick={() => {
+                  fetchWithQueries()
+                }} >Search</Button>
+              </div>
             </CardContent>
           </Card>
-        </div>
-        <div className="col-sm-12 col-md-12 col-lg-12">
-          <DatePicker
-            label="Show result from"
-            style={{ borderRadius: "4px", marginBottom: '1rem', backgroundColor: 'white', padding: '1rem' }}
-            fullWidth
-            placeholder="End Date"
-            autoOk
-            disableToolbar
-            variant="inline"
-            emptyLabel=""
-            value={startDate}
-            onChange={(d) => setStartDate(d)}
-          />
-          <DatePicker
-            label="To"
-            style={{ borderRadius: "4px", marginBottom: '1rem', backgroundColor: 'white', padding: '1rem' }}
-            fullWidth
-            placeholder="End Date"
-            autoOk
-            disableToolbar
-            variant="inline"
-            emptyLabel=""
-            value={endDate}
-            onChange={(d) => setEndDate(d)}
-          />
         </div>
         <div className="col-sm-12 col-md-12 col-lg-4">
           <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
@@ -313,3 +351,9 @@ export default function Dashboard() {
     </>
   );
 }
+
+const mapStateToProps = ({ auth: { user } }) => ({
+  user
+});
+
+export default connect(mapStateToProps)(Dashboard);

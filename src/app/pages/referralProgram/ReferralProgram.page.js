@@ -11,11 +11,18 @@ export const ReferralProgram = () => {
   const [showModal, setShowModal] = useState(false);
   const [{ data, loading, error }, refetch] = useAxios({
     url: '/referralProgram'
-  },{ manual: true })
+  }, { manual: true })
+
+  const [activeReq, changeActive] = useAxios({
+    url: '/referralProgram/changeActiveStatus',
+    method: 'POST'
+  }, { manual: true })
 
   useEffect(() => {
     refetch()
-  },[])
+  }, [])
+
+  let canActivate = false
 
   return (
     <>
@@ -31,14 +38,39 @@ export const ReferralProgram = () => {
                 New
               </Button>
             }
-            progressPending={loading}
+            progressPending={loading || activeReq.loading}
             data={data}
             columns={[
               { name: 'Name', selector: 'name' },
               { name: 'End Date', cell: (row) => row.endDate ? row.endDate.toString().split("T")[0] : "No" },
-              { name: 'Is Active', cell: (row) => row.isActive ? "Yes": "No" },
-              { name: 'See Results', cell: (row) => <p style={{ textDecoration: "underline", color: "blue", cursor: 'pointer'}} onClick={() => history.push(`/dashboard/${row.id}`)}>See Results</p> },
-              { name: 'Edit', cell: (row) => <EditIcon onClick={() => setShowModal(row)} style={{ cursor: "pointer"}} /> },
+              {
+                name: 'Is Active', cell: (row) => {
+                  return (
+                    <>
+                      {row.isActive && (
+                        <Button onClick={() => {
+                          const data = { programId: row.id, isActive: false }
+                          changeActive({ data})
+                          .then(() => refetch())
+                        }} size="small" variant="outlined" color="primary" href="#outlined-buttons">
+                          Deactive
+                        </Button>
+                      )}
+                      {!row.isActive && (
+                        <Button onClick={() => {
+                          const data = { programId: row.id, isActive: true }
+                          changeActive({ data })
+                          .then(() => refetch())
+                        }} disabled={canActivate} size="small" variant="outlined" color="secondary" href="#outlined-buttons">
+                          Active
+                        </Button>
+                      )}
+                    </>
+                  );
+                }
+              },
+              { name: 'See Results', cell: (row) => <p style={{ textDecoration: "underline", color: "blue", cursor: 'pointer' }} onClick={() => history.push(`/dashboard/${row.id}`)}>See Results</p> },
+              { name: 'Edit', cell: (row) => <EditIcon onClick={() => setShowModal(row)} style={{ cursor: "pointer" }} /> },
             ]}
           />
         </div>
