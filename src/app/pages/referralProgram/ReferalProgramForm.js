@@ -482,7 +482,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                         color="primary"
                       />
                     }
-                    label="Include Free Deliver"
+                    label="Include Free Shipping"
                   />
 
                   <Typography variant="h6" gutterBottom style={{ marginTop: '4%' }}>

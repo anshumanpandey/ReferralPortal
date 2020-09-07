@@ -32,7 +32,7 @@ export const Reward = (props) => {
               { name: 'Reward Type', cell: (row) => row.rewardType != "Gift" ? row.rewardType : <p style={{ textDecoration: 'underline', color: 'blue', cursor: "pointer"}} onClick={() => setShowModal(row.Gifts)}>{row.rewardType}</p>},
               { name: 'Discount Amount', selector: 'discountAmount', cell: (r) => r.discountAmount ? r.discountAmount: 'N/A' },
               { name: 'Discount Unit', selector: 'discountUnit', cell: (r) => r.discountUnit ? r.discountUnit: 'N/A' },
-              { name: 'Free Deliver', selector: 'freeDeliver', cell: (row) => row.freeDeliver ? "Yes": "No"},
+              { name: 'Free Shipping', selector: 'freeDeliver', cell: (row) => row.freeDeliver ? "Yes": "No"},
             ]}
           />
         </div>
