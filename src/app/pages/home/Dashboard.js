@@ -332,7 +332,7 @@ function Dashboard({ user }) {
 
           <div className="kt-space-20" />
         </div>
-        <div className="col-xl-6">
+        <div className="col-xl-12">
           <Portlet fluidHeight={true}>
             <PortletHeader
               title="Store Credit"
@@ -343,7 +343,7 @@ function Dashboard({ user }) {
             </PortletBody>
           </Portlet>
         </div>
-        <div className="col-xl-6">
+        <div className="col-xl-12">
           <LatestUpdates leaderboard={data?.leaderboard} />
         </div>
       </>
