@@ -26,9 +26,9 @@ export const Reward = (props) => {
             progressPending={loading}
             data={data}
             columns={[
-              { name: 'Sponsor', selector: 'Customer.firstname' },
+              { name: 'Customer Name', cell: (row) => `${row.Customer.firstname} ${row.Customer.lastname}` },
               { name: 'Stored Credit', selector: 'storeCredit', cell: (r) => r.storeCredit ? r.storeCredit: 'N/A' },
-              { name: 'Free Producr', selector: 'freeProduct', cell: (r) => r.freeProduct ? r.freeProduct: 'N/A' },
+              { name: 'Free Product', selector: 'freeProduct', cell: (r) => r.FreeProduct.length != 0 ? r.FreeProduct[0].name: 'N/A' },
               { name: 'Reward Type', cell: (row) => row.rewardType != "Gift" ? row.rewardType : <p style={{ textDecoration: 'underline', color: 'blue', cursor: "pointer"}} onClick={() => setShowModal(row.Gifts)}>{row.rewardType}</p>},
               { name: 'Discount Amount', selector: 'discountAmount', cell: (r) => r.discountAmount ? r.discountAmount: 'N/A' },
               { name: 'Discount Unit', selector: 'discountUnit', cell: (r) => r.discountUnit ? r.discountUnit: 'N/A' },

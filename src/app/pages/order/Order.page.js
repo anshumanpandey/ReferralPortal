@@ -20,7 +20,8 @@ export const OrderPage = () => {
             data={data}
             columns={[
               { name: 'Order Amount', selector: 'orderAmount' },
-              { name: 'Promotion Method', selector: 'promotionMethod' },
+              { name: 'Customer Name', cell: (row) => `${row.Customer.firstname} ${row.Customer.lastname}` },
+              { name: 'Referred By', cell: (row) => row.Customer.Customers.length == 0 ? 'N/A': `${row.Customer.Customers[0].firstname} ${row.Customer.Customers[0].lastname}` },
             ]}
           />
         </div>
