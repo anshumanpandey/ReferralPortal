@@ -72,8 +72,8 @@ export const ReferralProgram = ({ user }) => {
               return d.UserId == programsFor
             })}
             columns={[
-              { name: 'Name', selector: 'name' },
-              { name: 'End Date', cell: (row) => row.endDate ? row.endDate.toString().split("T")[0] : "No" },
+              { sortable: true ,name: 'Name', selector: 'name' },
+              { sortable: true ,name: 'End Date', selector: "endDate",format: (row) => row.endDate ? row.endDate.toString().split("T")[0] : "No" },
               {
                 name: 'Is Active', cell: (row) => {
                   return (
@@ -83,8 +83,8 @@ export const ReferralProgram = ({ user }) => {
                           const data = { programId: row.id, isActive: false }
                           changeActive({ data })
                             .then(() => refetch())
-                        }} size="small" variant="outlined" color="primary" href="#outlined-buttons">
-                          Deactive
+                        }} size="small" variant="outlined" color="secondary" href="#outlined-buttons">
+                          Deactivate
                         </Button>
                       )}
                       {!row.isActive && (
@@ -92,8 +92,8 @@ export const ReferralProgram = ({ user }) => {
                           const data = { programId: row.id, isActive: true }
                           changeActive({ data })
                             .then(() => refetch())
-                        }} disabled={canActivate} size="small" variant="outlined" color="secondary" href="#outlined-buttons">
-                          Active
+                        }} disabled={canActivate} size="small" variant="outlined" color="primary" href="#outlined-buttons">
+                          Activate
                         </Button>
                       )}
                     </>
@@ -103,6 +103,7 @@ export const ReferralProgram = ({ user }) => {
               { name: 'See Results', cell: (row) => <p style={{ textDecoration: "underline", color: "blue", cursor: 'pointer' }} onClick={() => history.push(`/dashboard/${row.id}`)}>See Results</p> },
               { name: 'Edit', cell: (row) => <EditIcon onClick={() => setShowModal(row)} style={{ cursor: "pointer" }} /> },
             ]}
+            pagination={true}
           />
         </div>
       </div>

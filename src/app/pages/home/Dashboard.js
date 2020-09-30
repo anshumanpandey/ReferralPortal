@@ -226,7 +226,7 @@ function Dashboard({ user }) {
             <PortletBody fluid={true}>
               <QuickStatsChart
                 value={data?.customersAmount}
-                desc="User"
+                desc="Customer"
                 data={chartOptions.chart1.data}
                 color={chartOptions.chart1.color}
                 border={chartOptions.chart1.border}
@@ -246,22 +246,6 @@ function Dashboard({ user }) {
                 data={chartOptions.chart1.data}
                 color={chartOptions.chart1.color}
                 border={chartOptions.chart1.border}
-              />
-            </PortletBody>
-          </Portlet>
-          <div className="kt-space-20" />
-
-        </div>
-
-        <div className="col-sm-12 col-md-12 col-lg-4">
-          <Portlet className="kt-portlet--height-fluid-half kt-portlet--border-bottom-brand" style={{ height: '90%' }}>
-            <PortletBody fluid={true}>
-              <QuickStatsChart
-                value={data?.credits}
-                desc="Total credits"
-                data={chartOptions.chart2.data}
-                color={chartOptions.chart2.color}
-                border={chartOptions.chart2.border}
               />
             </PortletBody>
           </Portlet>

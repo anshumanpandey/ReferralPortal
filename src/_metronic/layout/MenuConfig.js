@@ -25,7 +25,7 @@ export default {
       {
         title: "Partners",
         root: false,
-        icon: "flaticon2-architecture-and-city",
+        icon: "flaticon2-user-outline-symbol",
         page: "partners",
         bullet: "dot",
         roles: ["Super_admin"]
@@ -33,21 +33,21 @@ export default {
       {
         title: "Referral Program",
         root: false,
-        icon: "flaticon2-architecture-and-city",
+        icon: "flaticon2-cardiogram",
         page: "referalProgram",
         bullet: "dot"
       },
       {
         title: "Reward",
         root: false,
-        icon: "flaticon2-architecture-and-city",
+        icon: "flaticon-medal",
         page: "reward",
         bullet: "dot"
       },
       {
         title: "Order",
         root: false,
-        icon: "flaticon2-architecture-and-city",
+        icon: "flaticon2-shopping-cart-1",
         page: "order",
         bullet: "dot"
       },

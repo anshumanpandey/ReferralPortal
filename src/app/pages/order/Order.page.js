@@ -18,10 +18,25 @@ export const OrderPage = () => {
           <DataTable
             progressPending={loading}
             data={data}
+            pagination={true}
             columns={[
-              { name: 'Order Amount', selector: 'orderAmount' },
-              { name: 'Customer Name', cell: (row) => `${row.Customer.firstname} ${row.Customer.lastname}` },
-              { name: 'Referred By', cell: (row) => row.Customer.Customers.length == 0 ? 'N/A': `${row.Customer.Customers[0].firstname} ${row.Customer.Customers[0].lastname}` },
+              { sortable: true, name: 'Order Amount', selector: 'orderAmount' },
+              {
+                sortable: true,
+                name: 'Customer Name',
+                selector: 'Customer.firstname',
+                format: (row) => `${row.Customer.firstname} ${row.Customer.lastname}`
+              },
+              {
+                sortable: true,
+                name: 'Referred By',
+                cell: (row) => row.Customer.Customers.length == 0 ? 'N/A': `${row.Customer.Customers[0].firstname} ${row.Customer.Customers[0].lastname}`
+              },
+              {
+                sortable: true,
+                name: 'Referral Program',
+                selector: "ReferralProgram.name"
+              },
             ]}
           />
         </div>

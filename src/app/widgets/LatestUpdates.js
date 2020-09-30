@@ -10,6 +10,9 @@ export default function LatestUpdates({ leaderboard }) {
           <div className="kt-portlet__head-label">
             <h3 className="kt-portlet__head-title">Leaderboard</h3>
           </div>
+          <div className="kt-portlet__head-label">
+            <h3 className="kt-portlet__head-title">No. Customer Referred</h3>
+          </div>
         </div>
         <div className="kt-portlet__body">
           <div className="kt-widget4">
@@ -20,7 +23,7 @@ export default function LatestUpdates({ leaderboard }) {
                     className="kt-widget4__title"
                     href="https://keenthemes.com.my/metronic"
                   >
-                    {l.firstname}
+                    {l.firstname} {l.lastname}
                   </a>
                   <span className="kt-widget4__number kt-font-success">{l.Customers.length}</span>
                 </div>
