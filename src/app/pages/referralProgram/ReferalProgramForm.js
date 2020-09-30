@@ -79,6 +79,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
               setMaxCreditPerCustomer: referralProgram?.customerMaxStoreCredit ? true : false,
               maxCreditPerCustomer: referralProgram?.customerMaxStoreCredit || "",
               customerFreeProduct: referralProgram?.customerFreeProduct || null,
+              colorCode: referralProgram?.colorCode || "",
 
               destinationLink: referralProgram?.destinationLink || "",
 
@@ -495,7 +496,7 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                     </FormHelperText>
                   )}
 
-                  <div style={{ display: 'flex', flexDirection: "column" }}>
+                  <div style={{ display: 'flex', flexDirection: "column", marginBottom: 0 }}>
                     <FormControlLabel
                       control={
                         <Checkbox
@@ -624,6 +625,20 @@ export const ReferalProgramForm = ({ onHide, referralProgram, edit, user }) => {
                         </div>
                       </>
                     )}
+                  </div>
+
+                  <div className="form-group">
+                    <TextField
+                      label="Hex Color Code"
+                      margin="normal"
+                      className="kt-width-full"
+                      name="colorCode"
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.colorCode}
+                      helperText={touched.colorCode && errors.colorCode}
+                      error={Boolean(touched.colorCode && errors.colorCode)}
+                    />
                   </div>
 
                   <div style={{ marginTop: '1rem' }} className="kt-login__actions">
